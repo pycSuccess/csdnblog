@@ -7,9 +7,11 @@ from django.urls import reverse
 from blog.models import Article
 from blog.models import UserInfo
 
+
 def index(request):
     article_list = Article.objects.all()
-    return render(request, 'index.html', {'article': article_list})
+    print(article_list)
+    return render(request, 'index.html', {'article_list': article_list})
 
 
 def login(request):
