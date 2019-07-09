@@ -3,13 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <title>登录页</title>
+    <script type="text/javascript" src="/static/js/jquery.js">
+    </script>
+    <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="/static/bootstrap/css/signin.css">
 </head>
 <body>
     <form  method='post' action={% url 'login' %}>
         {% csrf_token %}
         <label>用户名</label><input type="text" name="user"/>
         <label>密码</label><input type="password" name="pwd"/>
-        <input type="submit" value="提交"/>
+        <input type="button" value="提交" id="login"/>
     </form>
+    <script type="text/javascript">
+        $('#login').click(function () {
+            $.ajax({
+                url:'/news/login/',
+                type:'post',
+                data:{
+                    csrfmiddlewaretoken: $("[name='csrfmiddlewaretoken']").val(),
+                    user: $("[name='user']").val(),
+                    pwd: $("[name='pwd']").val()
+                },
+                success:function (data) {
+                    console.log(data)
+                    data = JSON.parse(data)
+                    if (data.status){
+                        window.location = data.url
+                        }else {
+                        alert('登录失败')
+                    }
+                }
+            })
+        })
+    </script>
 </body>
 </html>
