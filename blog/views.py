@@ -24,7 +24,7 @@ def login(request):
         user = auth.authenticate(username=user, password=pwd)
         if user:
             auth.login(request, user)
-            url = reverse('index')
+            url = reverse('blog.index')
             return redirect(url)
     return render(request, 'login.html')
 
@@ -35,7 +35,10 @@ def logout(request):
     return redirect(url)
 
 
-def home_site(request, username):
+def home_site(request, username, **kwargs):
+    if kwargs:
+        condition = kwargs.get("condition")
+        params = kwargs.get("params")
     user = UserInfo.objects.filter(username=username).first()
     if not user:
         return render(request, 'not_found.html')
